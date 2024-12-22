@@ -11,11 +11,16 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    let BASE_URL = process.env.REACT_APP_BACKEND_URL;
+    if (process.env.NODE_ENV === "production") {
+        BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
+    }
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(null);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
+            const response = await axios.post(`${BASE_URL}/auth/login`, { email, password });
             dispatch(login({ user: response.data.user, token: response.data.token, isAuthenticated: response.data.isAuthenticated }));
             alert('Login successful!');
             // navigate('/post-list');

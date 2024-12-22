@@ -8,11 +8,16 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    let BASE_URL = process.env.REACT_APP_BACKEND_URL;
+    if (process.env.NODE_ENV === "production") {
+        BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
+    }
+
     const handleRegister = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, { name, email, password });
+            await axios.post(`${BASE_URL}/auth/register`, { name, email, password });
             alert('User Registered Successfully');
             setName('');
             setEmail('');
